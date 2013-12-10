@@ -95,6 +95,7 @@ hash_remove(const void *key, hashtbl * tbl)
 			*I = (*I)->next;
 			tbl->datafree(i->data);
 			free(i);
+			tbl->cnt--;
 			break;
 		}
 	}
