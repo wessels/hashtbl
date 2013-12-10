@@ -4,6 +4,7 @@
  * http://www.azillionmonkeys.com/qed/hash.html
  */
 
+#include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -36,6 +37,7 @@ hash_add(const void *key, void *data, hashtbl *tbl)
 	slot = tbl->hasher(key) % tbl->modulus;
 	for (I = &tbl->items[slot]; *I; I = &(*I)->next);
 	*I = new;
+	tbl->cnt++;
 	return 0;
 }
 
@@ -51,31 +53,34 @@ hash_find(const void *key, hashtbl *tbl)
 	return NULL;
 }
 
-int
+unsigned int
 hash_count(hashtbl *tbl)
 {
-	int slot;
-	int count = 0;
-	for(slot = 0; slot < tbl->modulus; slot++) {
-		hashitem *i;
-		for (i = tbl->items[slot]; i; i=i->next)
-			count++;
-	}
-	return count;
+	return tbl->cnt;
 }
 
-#include <stdio.h>
 void
 hash_analyze(hashtbl *tbl)
 {
-	int slot;
-	for(slot = 0; slot < tbl->modulus; slot++) {
-		int count = 0;
-		hashitem *i;
-		for (i = tbl->items[slot]; i; i=i->next)
-			count++;
-		fprintf(stderr, "slot %d items %d\n", slot, count);
-	}
+        unsigned int slot;
+	unsigned int num_empty_slots = 0;
+	unsigned int max = 0;
+        for(slot = 0; slot < tbl->modulus; slot++) {
+                int count = 0;
+                hashitem *i;
+                for (i = tbl->items[slot]; i; i=i->next)
+                        count++;
+		if (0 == count) {
+			num_empty_slots++;
+		} else if (count > max) {
+			max = count;
+		}
+        }
+	fprintf(stderr, "  Total Slots: %u\n", tbl->modulus);
+	fprintf(stderr, "  Empty Slots: %u\n", num_empty_slots);
+	fprintf(stderr, "    Hash Keys: %u\n", tbl->cnt);
+	fprintf(stderr, "Expected Mean: %u\n", tbl->cnt / tbl->modulus);
+	fprintf(stderr, " Longest List: %u\n", max);
 }
 
 void

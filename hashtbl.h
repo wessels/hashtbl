@@ -18,6 +18,7 @@ typedef struct {
 		hashitem *next;
 		unsigned int slot;
 	} iter;
+	unsigned int cnt;
 } hashtbl;
 
 hashtbl *hash_create(int N, hashfunc *, hashkeycmp *, hashfree *);
@@ -26,9 +27,9 @@ void hash_remove(const void *key, hashtbl * tbl);
 void *hash_find(const void *key, hashtbl *);
 void hash_iter_init(hashtbl *);
 void *hash_iterate(hashtbl *);
-int hash_count(hashtbl *);
-void hash_analyze(hashtbl *);
+unsigned int hash_count(hashtbl *);
 void hash_free(hashtbl *);
 void hash_destroy(hashtbl *);
+void hash_analyze(hashtbl *);
 
 extern unsigned int SuperFastHash (const char * data, int len);
