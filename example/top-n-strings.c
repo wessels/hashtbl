@@ -46,12 +46,13 @@ sort(void)
 {
 	unsigned int i;
 	unsigned int n = hash_count(tbl);
-	fprintf(stderr, "SORT %u...\n", n);
+	fprintf(stderr, "SORT %u...", n);
 	hash_iter_init(tbl);
 	for (i = 0; i < n; i++) {
 		*(sorted+i) = (string_counter *) hash_iterate(tbl);
 	}
 	qsort(sorted, n, sizeof(string_counter *), sort_cmper);
+	fprintf(stderr, "\n");
 	return n;
 }
 
@@ -60,10 +61,11 @@ cull()
 {
 	unsigned int i;
 	unsigned int n = sort();
-	fprintf(stderr, "CULL down to %u...\n", inmem_count_lo);
+	fprintf(stderr, "CULL down to %u...", inmem_count_lo);
 	for (i = inmem_count_lo; i < n; i++) {
 		hash_remove((*(sorted+i))->string, tbl);
 	}
+	fprintf(stderr, "\n");
 }
 
 void
