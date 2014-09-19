@@ -1,3 +1,26 @@
+/*
+ *
+ * Let's say you need to generate the top N list of a *lot* of strings.
+ * More than you can keep in memory and more than your SQL database can
+ * crunch on.  You can use this program.
+ *
+ * Input is string, whitespace, and an optional count.  If the count is
+ * not given, the string is coutned once.
+ *
+ * Output is a sorted list of string,count pairs.
+ *
+ * The program reads and counts strings until it has inmem_count_hi
+ * strings in memory.  At that point, the program sorts the strings by
+ * count and removes the strings with low counts until there are only
+ * inmem_count_lo strings left.  Then the program proceeds to read more
+ * strings from the input.
+ *
+ * This program assumes the strings have a skewed popularity distribution
+ * such that the popular strings will always be kept in memory.
+ * If strings have a uniform popularity distribution, then this program
+ * won't work very well.
+ *
+ */
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
