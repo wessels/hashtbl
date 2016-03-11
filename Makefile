@@ -1,6 +1,7 @@
 NAME=hashtbl
 LIB=lib${NAME}.a
 CFLAGS=-Wall -O2
+PREFIX=/usr/local
 
 all: ${LIB}
 
@@ -13,8 +14,10 @@ demo: demo.c ${NAME}.o ${NAME}.h
 	${CXX} ${CFLAGS} -o $@ -I. demo.c ${NAME}.o
 
 install: ${LIB}
-	install -C -m 644 ${LIB} /usr/local/lib
-	install -C -m 644 ${NAME}.h /usr/local/include
+	install -d -m 744 ${PREFIX}/lib
+	install -d -m 744 ${PREFIX}/include
+	install -C -m 644 ${LIB} ${PREFIX}/lib
+	install -C -m 644 ${NAME}.h ${PREFIX}/include
 
 clean:
 	rm -f ${NAME}.o
