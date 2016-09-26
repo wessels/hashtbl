@@ -14,8 +14,8 @@ demo: demo.c ${NAME}.o ${NAME}.h
 	${CXX} ${CFLAGS} -o $@ -I. demo.c ${NAME}.o
 
 install: ${LIB}
-	install -d -m 744 ${PREFIX}/lib
-	install -d -m 744 ${PREFIX}/include
+	install -d -m 755 ${PREFIX}/lib
+	install -d -m 755 ${PREFIX}/include
 	install -C -m 644 ${LIB} ${PREFIX}/lib
 	install -C -m 644 ${NAME}.h ${PREFIX}/include
 
